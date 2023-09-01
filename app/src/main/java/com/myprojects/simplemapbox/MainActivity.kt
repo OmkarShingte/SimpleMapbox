@@ -3,7 +3,6 @@ package com.myprojects.simplemapbox
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -14,7 +13,6 @@ import com.mapbox.android.gestures.MoveGestureDetector
 import com.mapbox.maps.CameraOptions
 import com.mapbox.maps.MapView
 import com.mapbox.maps.Style
-import com.mapbox.maps.Style.Companion
 import com.mapbox.maps.plugin.LocationPuck2D
 import com.mapbox.maps.plugin.gestures.OnMoveListener
 import com.mapbox.maps.plugin.gestures.gestures
@@ -43,7 +41,7 @@ class MainActivity : AppCompatActivity() {
             mapView!!.gestures.focalPoint = mapView!!.getMapboxMap().pixelForCoordinate(point)
         }
     private val onMoveListener: OnMoveListener = object : OnMoveListener {
-        override fun onMoveBegin(moveGestureDetector: MoveGestureDetector) {
+        override fun onMoveBegin(detector: MoveGestureDetector) {
             mapView!!.location.removeOnIndicatorBearingChangedListener(
                 onIndicatorBearingChangedListener
             )
@@ -54,11 +52,11 @@ class MainActivity : AppCompatActivity() {
             floatingActionButton!!.show()
         }
 
-        override fun onMove(moveGestureDetector: MoveGestureDetector): Boolean {
+        override fun onMove(detector: MoveGestureDetector): Boolean {
             return false
         }
 
-        override fun onMoveEnd(moveGestureDetector: MoveGestureDetector) {}
+        override fun onMoveEnd(detector: MoveGestureDetector) {}
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -91,7 +89,7 @@ class MainActivity : AppCompatActivity() {
                 onIndicatorPositionChangedListener
             )
             mapView!!.gestures.addOnMoveListener(onMoveListener)
-            floatingActionButton!!.setOnClickListener(View.OnClickListener {
+            floatingActionButton!!.setOnClickListener {
                 locationComponentPlugin.addOnIndicatorBearingChangedListener(
                     onIndicatorBearingChangedListener
                 )
@@ -100,7 +98,7 @@ class MainActivity : AppCompatActivity() {
                 )
                 mapView!!.gestures.addOnMoveListener(onMoveListener)
                 floatingActionButton!!.hide()
-            })
+            }
         }
     }
 }
